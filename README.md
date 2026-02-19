@@ -36,4 +36,20 @@
    
    ## npm run dev ##
    
-  
+## Run with Docker
+
+**If you to run using Docker, follow these steps :**
+
+- **Navigate to the main folder**
+
+- **Build and start the containers**
+
+```
+docker compose up --build
+```
+
+> The application will be available at : http://localhost:5173
+
+- **Stop containers**
+```
+docker compose down

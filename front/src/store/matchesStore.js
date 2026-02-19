@@ -23,7 +23,7 @@ export const matchesStore = defineStore("matchesStore", {
             }
             try{
                 this.error = null;
-                const response = await axios.get(`http://localhost:3001/matches/${date}`)
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/matches/${date}`)
                 // load data from api and send request
                 this.matches[date] = response.data
                 // console.log(response.data);

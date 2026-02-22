@@ -51,8 +51,8 @@
       <div class="machResult" v-for="match in matches" :key="match.id">
 
         <div class="team teamHome">
-        <span>{{ shortName(match.teams.home.name) }}</span>
         <img :src="match.teams.home.logo">
+        <span>{{ shortName(match.teams.home.name) }}</span>
         </div>
 
         <div class="goalsOrDate">
@@ -111,16 +111,33 @@ export default {
       return this.matches[this.theDate] || []
     },
 
-    // filter the matches with league name
+    // filter the matches with 5 leagues and order them with the name of the league
     matchesByName(){
-      const group = {}
-      this.theMatches.forEach(match => {
-        const league = match.league.name
-        if(!group[league]) group[league] = []
-        group[league].push(match)
-      })
-      return group
+   const priority = {
+    "La Liga": 1,
+    "Serie A": 2,
+    "Bundesliga": 3,
+    "Ligue 1": 4,
+    "UEFA Champions League": 5,
+  }
+
+  const group = {}
+
+  this.theMatches.forEach(match => {
+    const league = match.league.name
+    if(!group[league]) group[league] = []
+    group[league].push(match)
+  })
+
+  return Object.fromEntries(
+    Object.entries(group).sort((a,b) => {
+      const aPriority = priority[a[0]] || 999
+      const bPriority = priority[b[0]] || 999
+      return aPriority - bPriority
+    })
+  )
     }
+
   },
   methods: {
     ...mapActions(matchesStore,["getMatches"]),
@@ -299,29 +316,22 @@ export default {
   /* media queries */
   @media (max-width:800px) {
     .champion{
-    width: 110vh;
-  }
-  .dateLinks .date{
-    padding: 2.5vh 12vh 2.5vh 12vh ;
-  }
-  .machResult .teamHome{
-    margin-left: 6vh;
-  }
-  .machResult{
-    padding: 4vh 0;
-  }
-   .machResult .teamAway{
-    margin-left: 16vh;
-    margin-right: 16vh;
+    width: 100%;
   }
    .machResult span{
-    font-size: 13px;
-  }
-  .machResult .goalsOrDate{
-    margin-left: -14vh;
+    font-size: 16px;
   }
   .skeleton{
     padding: 0 1vh;
+  }
+  }
+
+  @media (max-width:768px) {
+    .champion{
+    width: 110vh;
+  }
+.dateLinks .date{
+    padding: 2vh 10vh 2vh 10vh ;
   }
   }
 
@@ -332,31 +342,19 @@ export default {
   .dateLinks .date{
     padding: 2vh 10vh 2vh 10vh ;
   }
-  .machResult{
-    padding: 5vh 1vh;
-  }
-  .machResult .team{
-    gap: 0.6vh;
-  }
   .machResult .teamHome{
     margin-left: 6vh;
   }
    .machResult .teamAway{
-    margin-right: 2vh;
+    margin-left: 14vh;
   }
   .machResult .goalsOrDate{
-    margin-left: -15vh;
-    font-size: 13px;
-  }
-  .machResult img{
-    width: 20px;
-  }
-  .machResult span{
-    font-size: 13px;
+    margin-right: 0vh;
+    transform: translateX(5vh);
   }
   .title {
     width: 70vh;
-    padding-right: 18vh;
+    padding-right: 25vh;
     margin-left: -18vh;
   }
   .skeleton{
@@ -364,107 +362,121 @@ export default {
   }
   }
 
-  @media (max-width:570px){
-    .title {
-    width: 70vh;
-    padding-right: 22vh;
-    margin-left: -20vh;
-  }
-  }
-  @media (max-width:500px){
+  @media (max-width:600px){
     .champion{
-    width: 70vh;
+    width: 80vh;
   }
   .dateLinks .date{
     padding: 2.5vh 5vh 2.5vh 5vh ;
   }
-  .nameChampion h3{
-    font-size: 13px;
-    font-weight: 400;
+  .machResult .teamHome{
+    margin-left: -3vh;
+    transform: translateX(3vh);
   }
-  .machResult img{
-    width: 17px;
-  }
-  .machResult span{
-    font-size: 11px;
+   .machResult .teamAway{
+    margin-left: 0vh;
+    transform: translateX(120px);
   }
   .machResult .goalsOrDate{
-    width: 50px;
-    text-align: center;
-    flex: 0 0 auto;
-    font-size: 11px;
-  }
-  .machResult .team{
-    gap: 0.2vh;
-    margin: 0 -2vh;
-  }
-  .machResult .teamHome{
-    margin-left: 2vh;
-  }
-  .machResult .teamAway{
-    margin-right: -12vh;
+    margin-right: 0vh;
+    transform: translateX(13vh);
   }
   .title {
     width: 70vh;
     padding-right: 27vh;
     margin-left: -25vh;
   }
-  .date{
-    font-size: 14px;
-  }
-   .skeleton{
+  .skeleton{
     padding: 0 13vh;
   }
   }
 
-  @media (max-width:400px){
-  .champion{
-    width: 50vh;
+  @media (max-width:500px){
+    .champion{
+    width: 70vh;
   }
-  .dateLinks .date{
-    padding: 2.5vh 3.5vh 2.5vh 3.5vh ;
+  .machResult .team span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 18vh;
     font-size: 13px;
-  }
-  .machResult img{
-    width: 13px;
-  }
-  .machResult .teamAway{
-    margin-right: -13vh;
-  }
-  .title {
-    padding-right: 27vh;
-    margin-left: -28vh;
+    font-weight: 600;
   }
   .machResult .goalsOrDate{
-    padding-right: 1vh;
-    font-size: 11px;
+    margin-right: 0vh;
+    transform: translateX(13vh);
+  }
+  .machResult .teamHome{
+    margin-left: 0vh;
+    transform: translateX(-1vh);
+  }
+  .machResult .teamAway{
+    margin-left: 0vh;
+    transform: translateX(110px);
+  }
+
+}
+
+@media (max-width:440px){
+    .champion{
+    width: 65vh;
+  }
+}
+
+  @media (max-width:400px){
+  .champion{
+    width: 58vh;
+  }
+  .machResult .goalsOrDate{
+    margin-right: 0vh;
+    transform: translateX(15vh);
+    font-size: 14px;
+  }
+  .machResult .team span{
+    transform: translateX(-1vh);
+    max-width: 22vh;
+  }
+  .machResult .teamHome{
+    margin-left: 0vh;
+    transform: translateX(-1vh);
+  }
+  .machResult .teamAway{
+    margin-left: 0vh;
+    transform: translateX(110px);
+  }
+  .title {
+    padding-right: 30vh;
   }
   .skeleton{
     padding: 0 23vh;
   }
   }
-  @media (max-width:340px){
+  @media (max-width:360px){
     .champion{
-    width: 50vh;
+    width: 55vh;
   }
   .title {
     padding-right: 27vh;
     margin-left: -31vh;
     opacity: 1;
   }
-  .machResult .teamAway{
-    margin-right: -9vh;
-  }
-   .nameChampion h3{
-    font-size: 12px;
-    font-weight: 400;
-  }
   .machResult .goalsOrDate{
-    padding-left: 4vh;
-    font-size: 11px;
+    transform: translateX(14vh);
   }
+  .machResult .team span{
+    transform: translateX(-1vh);
+    max-width: 25vh;
+  }
+  .dateLinks .date{
+    padding: 2.5vh 3vh 2.5vh 3vh ;
+  }
+   .machResult .teamHome{
+    margin-left: 0vh;
+    transform: translateX(-1vh);
   
   }
+}
   
 
 </style>

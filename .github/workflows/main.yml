@@ -24,6 +24,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./front
+          file: ./front/Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/matches-frontend:latest
 
@@ -32,5 +33,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./server
+          file: ./server/Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/matches-backend:latest

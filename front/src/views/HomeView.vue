@@ -181,60 +181,58 @@ export default {
   html,body{
     overflow-x: hidden;
   }
+
+  /* header section */
   .header{
-    background: rgba(0, 0, 0, 0.904);
+    background: rgba(0, 0, 0, 0.9);
   }
   .header h3{
     color: aliceblue;
     font-size: 20px;
   }
   .header img{
-    width: 4vh;
+    width: 35px;
   }
   
+  /* footer section */
   .footer{
     background: black;
     width: 100%;
-    padding: 8vh 0vh;
+    padding: 60px 0;
     display: flex;
     justify-content: center;
   }
   .socialLinks .icon{
-    margin-left: 1.5vh;
-    margin-right: 1.5vh;
+    margin:0 10px;
   }
+
+  /* main section */
   .mainSection{
     width: 100%;
     min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.923);
+    background-color: rgba(0, 0, 0, 0.92);
   }
   .table{
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 3vh;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.651);
+    background-color: rgba(0, 0, 0, 0.65);
     color: aliceblue;
   }
 
+  /* champion box */
   .champion{
-    background-color: rgba(240, 248, 255, 0.446);
+    background-color: rgba(240,248,255,0.1);
     min-height: 100vh;
-    text-align: right;
     overflow: hidden;
-    width: 120vh;
+    width: 90%;
+    max-width: 800px;
   }
-  .nameChampion{
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    padding: 3vh 1vh 3vh 0;
-    gap: 1.5vh;
-    background-color: rgba(0, 0, 0, 0.386);
-  }
+
+  /* Date Links */
   .dateLinks{
     display: flex;
     align-items: center;
@@ -243,71 +241,94 @@ export default {
 
   }
   .dateLinks .date{
+    flex: 1;
     color: aliceblue;
+    text-align: center;
     text-decoration: none;
-    display: flex;
-    padding: 2vh 15vh 2vh 15vh ;
+    padding: 16px 0;
     transition: 0.5s ease;
     font-weight: bold;
     font-family:Arial, Helvetica, sans-serif;
   }
   .dateLinks .date:hover{
-    background-color: rgba(0, 0, 0, 0.611);
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  /* league name  */
+  .nameChampion{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.4);
   }
   .nameChampion .imgLeague{
-    border: 1px solid transparent;
-    width: 40px;
+    width: 36px;
+    height: 36px;
     background-color: aliceblue;
     border-radius: 7px;
     display: flex;
+    align-items: center;
     justify-content: center;
   }
   .imgLeague img{
-    width: 20px;
+    width: 22px;
   }
   .nameChampion h3{
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 400;
+    color: aliceblue;
   }
+
+  /* MATCH ROW */
   .machResult{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: nowrap;
-    padding: 3vh 4vh;
-    background-color: rgba(0, 0, 0, 0.581);
-    gap: 2vh;
-    border: 1px solid transparent;
+    padding: 16px;
+    background-color: rgba(0, 0, 0, 0.58);
+    gap: 8px;
     border-bottom: 0.5px solid rgba(255, 255, 255, 0.156);
+    transition: 0.3s ease;
     cursor: pointer;
   }
+
+  /* team */
   .machResult .team{
     display: flex;
     align-items: center;
-    gap: 1.5vh;
-    min-width: 30%;
+    gap: 8px;
+    min-width: 0;
     flex: 1;
   }
-  .machResult .teamHome{
-    margin-left: 10vh;
-  }
   .machResult .teamAway{
-    margin-left: 20vh;
-    margin-right: 18vh;
+    flex-direction: row-reverse;
+    text-align: right;
   }
+  .machResult .team span{
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* SCORE / TIME */
   .machResult .goalsOrDate{
     color: aliceblue;
     font-size: 16px;
     font-weight: bold;
-    min-width: 30%;
-    margin-left: -20vh;
+    flex: 0 0 70px;
+    text-align: center;
+    flex-wrap: nowrap;
   }
 
   .machResult img{
-    width: 25px;
-  }
-  .machResult span{
-    font-size: 15px;
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
+    flex-shrink: 0;
   }
   .machResult:hover{
     background-color: rgba(0, 0, 0, 0.685);
@@ -315,48 +336,17 @@ export default {
 
   /* media queries */
   @media (max-width:800px) {
-    .champion{
-    width: 100%;
-  }
-   .machResult span{
-    font-size: 16px;
-  }
   .skeleton{
     padding: 0 1vh;
   }
   }
 
-  @media (max-width:768px) {
-    .champion{
-    width: 110vh;
-  }
-.dateLinks .date{
-    padding: 2vh 10vh 2vh 10vh ;
-  }
-  }
-
   @media (max-width:700px) {
-    .champion{
-    width: 95vh;
-  }
-  .dateLinks .date{
-    padding: 2vh 10vh 2vh 10vh ;
-  }
-  .machResult .teamHome{
-    margin-left: 6vh;
-  }
-   .machResult .teamAway{
-    margin-left: 14vh;
-  }
-  .machResult .goalsOrDate{
-    margin-right: 0vh;
-    transform: translateX(5vh);
-  }
   .title {
     width: 70vh;
     padding-right: 25vh;
     margin-left: -18vh;
-  }
+  } 
   .skeleton{
     padding: 0 1vh;
   }
@@ -364,22 +354,26 @@ export default {
 
   @media (max-width:600px){
     .champion{
-    width: 80vh;
+    width: 100%;
+  }
+  .machResult{
+    gap: 6px;
+    padding:12px 10px;
+  }
+  .machResult img{
+    width: 22px;
+    height: 22px;
+  }
+  .machResult .team span{
+    font-size: 12px;
   }
   .dateLinks .date{
-    padding: 2.5vh 5vh 2.5vh 5vh ;
-  }
-  .machResult .teamHome{
-    margin-left: -3vh;
-    transform: translateX(3vh);
-  }
-   .machResult .teamAway{
-    margin-left: 0vh;
-    transform: translateX(120px);
+    padding: 12px 0;
+    font-size: 13px;
   }
   .machResult .goalsOrDate{
-    margin-right: 0vh;
-    transform: translateX(13vh);
+    font-size: 14px;
+    flex: 0 0 55px;
   }
   .title {
     width: 70vh;
@@ -391,59 +385,16 @@ export default {
   }
   }
 
-  @media (max-width:500px){
-    .champion{
-    width: 70vh;
-  }
-  .machResult .team span{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 18vh;
-    font-size: 13px;
-    font-weight: 600;
-  }
-  .machResult .goalsOrDate{
-    margin-right: 0vh;
-    transform: translateX(13vh);
-  }
-  .machResult .teamHome{
-    margin-left: 0vh;
-    transform: translateX(-1vh);
-  }
-  .machResult .teamAway{
-    margin-left: 0vh;
-    transform: translateX(110px);
-  }
-
-}
-
-@media (max-width:440px){
-    .champion{
-    width: 65vh;
-  }
-}
-
   @media (max-width:400px){
-  .champion{
-    width: 58vh;
-  }
-  .machResult .goalsOrDate{
-    margin-right: 0vh;
-    transform: translateX(15vh);
-    font-size: 14px;
+    .nameChampion h3{
+    font-size: 13px;
   }
   .machResult .team span{
-    transform: translateX(-1vh);
-    max-width: 22vh;
+    font-size: 11px;
   }
-  .machResult .teamHome{
-    margin-left: 0vh;
-    transform: translateX(-1vh);
-  }
-  .machResult .teamAway{
-    margin-left: 0vh;
-    transform: translateX(110px);
+  .machResult .goalsOrDate{
+    font-size: 13px;
+    flex: 0 0 50px;
   }
   .title {
     padding-right: 30vh;
@@ -451,30 +402,14 @@ export default {
   .skeleton{
     padding: 0 23vh;
   }
-  }
+
+}
+
   @media (max-width:360px){
-    .champion{
-    width: 55vh;
-  }
   .title {
-    padding-right: 27vh;
+    padding-right: 25vh;
     margin-left: -31vh;
     opacity: 1;
-  }
-  .machResult .goalsOrDate{
-    transform: translateX(14vh);
-  }
-  .machResult .team span{
-    transform: translateX(-1vh);
-    max-width: 25vh;
-  }
-  .dateLinks .date{
-    padding: 2.5vh 3vh 2.5vh 3vh ;
-  }
-   .machResult .teamHome{
-    margin-left: 0vh;
-    transform: translateX(-1vh);
-  
   }
 }
   

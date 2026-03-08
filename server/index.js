@@ -2,6 +2,8 @@ import express from 'express'
 import axios from 'axios'
 import cors from 'cors'
 
+require('dotenv').config()
+
 const app = express()
 const port = process.env.PORT || 3001
 
@@ -30,7 +32,7 @@ app.get('/matches/:date', async (req, res) => {
 
     const response = await axios.get('https://v3.football.api-sports.io/fixtures', {
       headers: {
-        'x-apisports-key': '05b9e01bfc3dd2079bf951432c044346'
+        'x-apisports-key': process.env.API_KEY
       },
       params: {
         date: formatDate

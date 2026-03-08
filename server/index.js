@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
 })
 
 app.get('/matches/:date', async (req, res) => {
+
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
   try {
 
     // select date

@@ -10,6 +10,9 @@ const port = process.env.PORT || 3001
 
 app.use(cors())
 
+app.get('/', (req, res) => {
+  res.send('API is running ✅')
+})
 
 app.get('/matches/:date', async (req, res) => {
   try {
@@ -47,6 +50,8 @@ app.get('/matches/:date', async (req, res) => {
   }
 })
 
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Server running at http://localhost:${port}`)
-})
+export default app
+
+// app.listen(port, "0.0.0.0", () => {
+//   console.log(`Server running at http://localhost:${port}`)
+// })

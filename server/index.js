@@ -8,16 +8,17 @@ dotenv.config()
 const app = express()
 const port = process.env.PORT || 3001
 
-app.use(cors())
-
-app.options('*', cors())
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 app.get('/', (req, res) => {
   res.send('API is running ✅')
 })
 
 app.get('/matches/:date', async (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*')
   try {
 
     // select date
@@ -52,6 +53,10 @@ app.get('/matches/:date', async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 })
+
+if(process.env.NODE_ENV !== 'production') {
+  app.listen(3001, () => console.log('Server running on port 3001'))
+}
 
 export default app
 

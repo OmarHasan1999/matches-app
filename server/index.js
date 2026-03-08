@@ -8,11 +8,7 @@ dotenv.config()
 const app = express()
 const port = process.env.PORT || 3001
 
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}))
+app.use(cors())
 
 app.options('*', cors())
 
@@ -21,6 +17,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/matches/:date', async (req, res) => {
+  res.header('Access-Control-Allow-Origin', '*')
   try {
 
     // select date

@@ -8,7 +8,9 @@ dotenv.config()
 const app = express()
 const port = process.env.PORT || 3001
 
-app.use(cors())
+app.use(cors({
+  origin: 'https://matches-app-8kb5.vercel.app'
+}))
 
 app.get('/', (req, res) => {
   res.send('API is running ✅')

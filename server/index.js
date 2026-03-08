@@ -9,8 +9,12 @@ const app = express()
 const port = process.env.PORT || 3001
 
 app.use(cors({
-  origin: 'https://matches-app-8kb5.vercel.app'
+  origin: '*',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }))
+
+app.options('*', cors())
 
 app.get('/', (req, res) => {
   res.send('API is running ✅')

@@ -6,7 +6,7 @@
         <v-col cols="4">
 
           <div class="title" style="display: flex;gap: 1vh;justify-content: end;align-items: center;">
-          <h3>الترتيب والمباريات ببساطة</h3>
+          <h3>MatchDay Hub</h3>
           <img src="../assets/pngegg.png" alt="">
           </div>
         </v-col>
@@ -24,10 +24,10 @@
         </v-col>
         </v-row>
 
-        <div v-else-if="error">حدث خطأ: {{ error }}</div>
+        <div v-else-if="error">{{ error }}</div>
 
         <div v-else>
-          <div v-if="!loading && theMatches.length === 0">لا توجد مباريات مشهورة اليوم.</div>
+          <div v-if="!loading && theMatches.length === 0">error ..</div>
 
 
           <div v-else class="champion">
@@ -55,12 +55,22 @@
         <span>{{ shortName(match.teams.home.name) }}</span>
         </div>
 
+        <!-- showing the result  -->
         <div class="goalsOrDate">
         <template v-if="match.goals.home !== null && match.goals.away !== null">
+          <!-- if the match is live or in the first half or in the second half or in the extra time or in the penalty shootout show a green dot and minute -->
+          <div v-if="['1H','2H','HT','LIVE','ET','P'].includes(match.fixture.status.short)"
+          class="live-match">
+          <span class="dot-green"></span>
+          <span class="minute-match">{{ match.fixture.status.elapsed }}'</span>
+          </div>
+          
           {{ match.goals.home }} - {{ match.goals.away }}
         </template>
+
+        <!-- showing the time of the match -->
         <template v-else>
-          {{ new Date(match.fixture.date).toLocaleTimeString('EG', { hour: '2-digit', minute: '2-digit' }) }}
+          {{ new Date(match.fixture.date).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false }) }}
         </template>
         </div>
 
@@ -191,7 +201,7 @@ export default {
     font-size: 20px;
   }
   .header img{
-    width: 35px;
+    width: 25px;
   }
   
   /* footer section */
@@ -247,12 +257,21 @@ export default {
     text-decoration: none;
     padding: 16px 0;
     transition: 0.5s ease;
+    font-size: 14px;
     font-weight: bold;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
   .dateLinks .date:hover{
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.27);
   }
+
+  .dateLinks .date.router-link-active {
+  background-color: rgba(0, 0, 0, 0.55);
+  color: aliceblue;
+  border-color: rgba(255, 255, 255, 0.435);
+}
 
   /* league name  */
   .nameChampion{
@@ -292,6 +311,8 @@ export default {
     border-bottom: 0.5px solid rgba(255, 255, 255, 0.156);
     transition: 0.3s ease;
     cursor: pointer;
+    overflow: hidden;
+    position: relative;
   }
 
   /* team */
@@ -316,13 +337,59 @@ export default {
 
   /* SCORE / TIME */
   .machResult .goalsOrDate{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: aliceblue;
     font-size: 16px;
     font-weight: bold;
     flex: 0 0 70px;
     text-align: center;
     flex-wrap: nowrap;
+    position: relative;
+    height: 45px;
   }
+
+  .live-match{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -46%;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 4px;
+    border: 1px solid rgba(76, 175, 80, 0.4);
+    border-top: none;
+    border-radius: 12%;
+    background-color: rgba(76, 175, 80, 0.1);
+    padding: 1px 13px;
+  }
+
+  .live-match .dot-green{
+    width: 6px;
+    height: 6px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    margin-top: 4px;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.6); }
+  70%  { box-shadow: 0 0 0 4px rgba(76, 175, 80, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+  }
+
+  .live-match .minute-match {
+  color: aliceblue;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.5px;
+  margin-top: 6px;
+}
 
   .machResult img{
     width: 28px;
@@ -382,6 +449,12 @@ export default {
   }
   .skeleton{
     padding: 0 13vh;
+  }
+  .live-match .dot-green{
+    margin-top: 9px;
+  }
+  .live-match .minute-match {
+    margin-top: 9px;
   }
   }
 

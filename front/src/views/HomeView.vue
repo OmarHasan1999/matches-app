@@ -19,7 +19,7 @@
         <!-- skeleton loader -->
         <v-row v-if="loading">
         <v-col cols="3" v-for="num in 1" :key="num" style="min-height:100vh;">       
-            <v-skeleton-loader width="720" color="black" class="skeleton"
+            <v-skeleton-loader width="600" color="black" class="skeleton"
             type="article,article,article,article"></v-skeleton-loader>
         </v-col>
         </v-row>

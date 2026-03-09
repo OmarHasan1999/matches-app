@@ -66,68 +66,59 @@
 // //   console.log(`Server running at http://localhost:${port}`)
 // // })
 
-
-import express from 'express'
-import axios from 'axios'
-import cors from 'cors'
-import dotenv from 'dotenv'
+import express from "express"
+import axios from "axios"
+import cors from "cors"
+import dotenv from "dotenv"
+import serverless from "serverless-http"
 
 dotenv.config()
 
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: "*"
+}))
 
-// مهم جداً لـ Vercel
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*")
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization")
-
-  if (req.method === "OPTIONS") {
-    return res.status(200).end()
-  }
-
-  next()
+app.get("/", (req,res)=>{
+  res.send("API running")
 })
 
-app.get('/', (req, res) => {
-  res.send('API is running')
-})
+app.get("/matches/:date", async (req,res)=>{
+  try{
 
-app.get('/matches/:date', async (req, res) => {
-  try {
-
-    const { date } = req.params
+    const {date} = req.params
     const now = new Date()
     let targetDate = new Date()
 
-    if(date === 'yesterday'){
+    if(date === "yesterday"){
       targetDate.setDate(now.getDate() - 1)
-    }
-    else if(date === 'tomorrow'){
+    }else if(date === "tomorrow"){
       targetDate.setDate(now.getDate() + 1)
-    }
-    else{
+    }else{
       targetDate.setDate(now.getDate())
     }
 
-    const formatDate = targetDate.toISOString().split('T')[0]
+    const formatDate = targetDate.toISOString().split("T")[0]
 
-    const response = await axios.get('https://v3.football.api-sports.io/fixtures', {
-      headers: {
-        'x-apisports-key': process.env.API_KEY
-      },
-      params: {
-        date: formatDate
+    const response = await axios.get(
+      "https://v3.football.api-sports.io/fixtures",
+      {
+        headers:{
+          "x-apisports-key": process.env.API_KEY
+        },
+        params:{
+          date: formatDate
+        }
       }
-    })
+    )
 
     res.json(response.data.response)
 
-  } catch (err) {
-  console.log(err.response?.data)
-  res.status(err.response?.status || 500).json(err.response?.data || { error: err.message })
-}
+  }catch(err){
+    res.status(500).json({error: err.message})
+  }
 })
-export default app
+
+export const handler = serverless(app)
+export default handler

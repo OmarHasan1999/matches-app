@@ -9,7 +9,7 @@ const app = express()
 const port = process.env.PORT || 3001
 
 app.use(cors({
-  origin: '*',
+  origin: 'https://matches-app-8kb5.vercel.app',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
@@ -19,10 +19,6 @@ app.get('/', (req, res) => {
 })
 
 app.get('/matches/:date', async (req, res) => {
-
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
   try {
 
     // select date

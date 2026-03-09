@@ -10,9 +10,11 @@ const port = process.env.PORT || 3001
 
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET','POST','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
 }))
+
+app.options('*', cors())
 
 app.get('/', (req, res) => {
   res.send('API is running ✅')

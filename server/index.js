@@ -126,8 +126,8 @@ app.get('/matches/:date', async (req, res) => {
     res.json(response.data.response)
 
   } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
+  console.log(err.response?.data)
+  res.status(err.response?.status || 500).json(err.response?.data || { error: err.message })
+}
 })
-
 export default app

@@ -6,17 +6,16 @@
       "use": "@vercel/node"
     }
   ],
-  "headers": [
-    {
-      "source": "/matches/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
-      ]
-    }
-  ],
   "routes": [
+    {
+      "src": "/matches/(.*)",
+      "dest": "index.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "*"
+      }
+    },
     {
       "src": "/(.*)",
       "dest": "index.js"

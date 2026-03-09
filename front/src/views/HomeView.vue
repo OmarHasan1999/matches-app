@@ -101,39 +101,40 @@
   </div>
 </template>
 
-<script>
+
+<script setup>
 import { matchesStore } from "../store/matchesStore"
-import {mapState,mapActions} from "pinia"
-export default {
-  data() {
-    return {
-      loading:false
-    }
-  },
-  computed: {
-    ...mapState(matchesStore,["matches","error"]),
+import { onMounted, computed, ref, watch } from "vue"
+import {storeToRefs} from "pinia"
+import { useRoute } from "vue-router"
 
-    theDate(){
-      return this.$route.params.date || 'today'
-    },
+const route = useRoute()
 
-    theMatches(){
-      return this.matches[this.theDate] || []
-    },
+const loading = ref(false)
 
-    // filter the matches with 5 leagues and order them with the name of the league
-    matchesByName(){
-   const priority = {
-    "La Liga": 1,
-    "Serie A": 2,
-    "Bundesliga": 3,
-    "Ligue 1": 4,
-    "UEFA Champions League": 5,
+const theMatchesStore = matchesStore() 
+const { getMatches } = theMatchesStore
+const { matches, error } = storeToRefs(theMatchesStore)
+
+const theDate = computed(() => route.params.date || 'today')
+
+const theMatches = computed(() => matches.value[theDate.value] || [])
+
+const matchesByName = computed(() => {
+  const priority = {
+    "UEFA Champions League": 1,
+    "UEFA Europa League": 2,
+    "Premier League": 3,
+    "La Liga": 4,
+    "Serie A": 5,
+    "Bundesliga": 6,
+    "Ligue 1": 7,
+    "Saudi Pro League": 8,
   }
 
   const group = {}
 
-  this.theMatches.forEach(match => {
+  theMatches.value.forEach(match => {
     const league = match.league.name
     if(!group[league]) group[league] = []
     group[league].push(match)
@@ -146,41 +147,27 @@ export default {
       return aPriority - bPriority
     })
   )
-    }
+})
 
-  },
-  methods: {
-    ...mapActions(matchesStore,["getMatches"]),
-
-    shortName(e){
-      const part = e.split(' ')
-      if(part.length >= 3){
-        return part.slice(0,2).join(' ')
-      }
-      return e
-    }
-  },
-  mounted() {
-    const date = this.$route.params.date || 'today'
-    this.getMatches(date)
-    this.loading=true
-    setTimeout(() => {
-      this.loading=false
-    }, 1000);
-  },
-  watch: {
-    $route(){
-      const date = this.$route.params.date || 'today'
-      this.getMatches(date)
-
-      this.loading=true
-      setTimeout(() => {
-      this.loading=false
-    }, 1000);
-    }
-  },
+const shortName = (e) => {
+  const part = e.split(' ')
+  if(part.length >= 3){
+    return part.slice(0,2).join(' ')
+  }
+  return e
 }
-</script>
+
+const loadMatches = () => {
+  getMatches(theDate.value)
+  loading.value = true
+  setTimeout(() => loading.value = false, 1000)
+}
+
+onMounted(() => loadMatches())
+
+watch(route, () => loadMatches())
+</script> 
+
 <style lang="css">
   *{
     padding: 0%;
@@ -394,7 +381,7 @@ export default {
   .machResult img{
     width: 28px;
     height: 28px;
-    object-fit: cover;
+    object-fit: contain;
     flex-shrink: 0;
   }
   .machResult:hover{

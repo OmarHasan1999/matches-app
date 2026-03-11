@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const app = express()
-const port = process.env.PORT || (process.env.NODE_ENV === 'production' ? 7860 : 3001)
+const port = process.env.PORT || 7860
 
 app.use(cors({
   origin: '*',

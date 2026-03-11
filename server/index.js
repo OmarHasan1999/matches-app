@@ -55,10 +55,8 @@ app.get('/matches/:date', async (req, res) => {
   }
 })
 
-if(process.env.NODE_ENV !== 'production') {
   app.listen(port, "0.0.0.0", () => {
     console.log(`Server running at http://localhost:${port}`)
   })
-}
 
 export default app

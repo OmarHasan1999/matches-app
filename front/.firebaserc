@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "matchday-hub-app"
+  },
+  "targets": {
+    "matchday-hub-app": {
+      "hosting": {
+        "main": [
+          "matches-hub-app"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

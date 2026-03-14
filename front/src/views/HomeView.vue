@@ -27,7 +27,7 @@
         <div v-else-if="error">{{ error }}</div>
 
         <div v-else>
-          <div v-if="!loading && theMatches.length === 0">error ..</div>
+          <div v-if="!loading && !error && theMatches.length === 0">error ..</div>
 
 
           <div v-else class="champion">
@@ -95,7 +95,7 @@
           <v-icon class="icon">mdi-instagram</v-icon>
           <v-icon class="icon">mdi-whatsapp</v-icon>
         </div>
-        <span style="font-size: 14px;">Copyright © 2010 - 2025 جدول</span>
+        <span style="font-size: 14px;">Copyright © All Rights Reserved</span>
       </div>
     </div>
   </div>
@@ -104,13 +104,14 @@
 
 <script setup>
 import { matchesStore } from "../store/matchesStore"
-import { onMounted, computed, ref, watch } from "vue"
+import { onMounted, onUnmounted, computed, ref, watch } from "vue"
 import {storeToRefs} from "pinia"
 import { useRoute } from "vue-router"
 
 const route = useRoute()
 
 const loading = ref(false)
+const interValId = ref(null)
 
 const theMatchesStore = matchesStore() 
 const { getMatches } = theMatchesStore
@@ -124,12 +125,11 @@ const matchesByName = computed(() => {
   const priority = {
     "UEFA Champions League": 1,
     "UEFA Europa League": 2,
-    "Premier League": 3,
-    "La Liga": 4,
-    "Serie A": 5,
-    "Bundesliga": 6,
-    "Ligue 1": 7,
-    "Saudi Pro League": 8,
+    "La Liga": 3,
+    "Serie A": 4,
+    "Bundesliga": 5,
+    "Ligue 1": 6,
+    "Saudi Pro League": 7,
   }
 
   const group = {}
@@ -157,15 +157,40 @@ const shortName = (e) => {
   return e
 }
 
-const loadMatches = () => {
-  getMatches(theDate.value)
+const loadMatches = async() => {
   loading.value = true
-  setTimeout(() => loading.value = false, 1000)
+  await getMatches(theDate.value)
+  loading.value = false
 }
 
-onMounted(() => loadMatches())
+// refresh the minutes of the live matches every 60 seconds
+const refreshLiveMatches = () => {
+  interValId.value = setInterval(async() => {
+    await getMatches(theDate.value)
+  },60000)
+}
 
-watch(route, () => loadMatches())
+const stopRefresh = () => {
+  clearInterval(interValId.value)
+}
+
+// when loading the page
+onMounted(async() => {
+  await loadMatches()
+  refreshLiveMatches()
+})
+
+// when change the route (path) of the page
+watch(route, async() => {
+  stopRefresh()
+  await loadMatches()
+  refreshLiveMatches()
+})
+
+// stop the refresh when the component is unmounted
+onUnmounted(() => {
+  stopRefresh()
+})
 </script> 
 
 <style lang="css">
@@ -458,9 +483,6 @@ watch(route, () => loadMatches())
   }
   .title {
     padding-right: 30vh;
-  }
-  .skeleton{
-    padding: 0 23vh;
   }
 
 }

@@ -17,9 +17,11 @@ export const matchesStore = defineStore("matchesStore", {
 
             // check if the data in the store for not send request to api
             // load data from store if it access
-            if(this.matches[date]){
+
+            // get the data from the store with return (memory) if it exist and the date is not "today" because the data of today is changing every minute
+            if(this.matches[date] && date !== 'today'){
                 // console.log(`✅ تم تحميل بيانات ${date} من الذاكرة (store)`);
-                return
+                return 
             }
             try{
                 this.error = null;
